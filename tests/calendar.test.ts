@@ -62,7 +62,7 @@ test("blank grid has cells without fabricated dates and real page geometry", () 
 test("year/range/compare limits and month reference mapping", () => {
   assert.equal(createYear(2027).months.length, 12); assert.equal(createYear(2027).dayCount, 365);
   const range = createRange("2026-11", "2027-02", "monday");
-  assert.deepEqual(range.months.map(m => m.monthKey ?? `${m.monthName}-${m.days}`), ["November-30", "December-31", "January-31", "February-28"]);
+  assert.deepEqual(range.months.map(m => `${m.monthName}-${m.days}`), ["November-30", "December-31", "January-31", "February-28"]);
   assert.equal(createCompare("2026-11,2026-12,2027-01,2027-02").months.length, 4);
   assert.equal(createRange("2020-01", "2029-12").count, 120);
   assert.throws(() => createRange("2000-01", "2010-01"), ApiError);
