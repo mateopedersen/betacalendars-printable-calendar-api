@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createMonth, createPrintLayout, createBlankCalendar, createYear, createRange, createCompare, isLeapYear, monthSummary, referenceForMonth, referenceForBlank, ApiError, handleApiRequest } from "../src/calendar.ts";
+import { createMonth, createPrintLayout, createBlankCalendar, createYear, createRange, createCompare, isLeapYear, monthSummary, referenceForMonth, referenceForBlank, WEEKDAYS, ApiError, handleApiRequest } from "../src/calendar.ts";
 
 test("Gregorian century leap-year rules", () => {
   assert.equal(isLeapYear(1900), false); assert.equal(isLeapYear(2000), true);
@@ -34,6 +34,16 @@ test("week start options and adjacent date modes", () => {
   assert.equal(blank.weeks[0][0].date, null); assert.equal(blank.weeks[0][0].isPlaceholder, true);
 });
 
+test("all seven weekday starts align the first grid column correctly", () => {
+  for (const weekStart of WEEKDAYS) {
+    const model = createMonth(2027, 1, { weekStart, adjacentDays: "include" });
+    assert.equal(model.weeks[0][0].weekday, weekStart);
+    const currentFirst = model.weeks.flat().find(cell => cell.inCurrentMonth);
+    assert.equal(currentFirst?.day, 1);
+    assert.equal(model.weeks[0].length, 7);
+  }
+});
+
 test("paper geometry is physical and respects orientation/margins", () => {
   const a4 = createPrintLayout(2027, 1, new URLSearchParams("paper=a4&orientation=portrait&margin=10&notesHeight=35"));
   const letter = createPrintLayout(2027, 1, new URLSearchParams("paper=letter&orientation=landscape&margin=12"));
@@ -54,17 +64,21 @@ test("year/range/compare limits and month reference mapping", () => {
   const range = createRange("2026-11", "2027-02", "monday");
   assert.deepEqual(range.months.map(m => m.monthKey ?? `${m.monthName}-${m.days}`), ["November-30", "December-31", "January-31", "February-28"]);
   assert.equal(createCompare("2026-11,2026-12,2027-01,2027-02").months.length, 4);
+  assert.equal(createRange("2020-01", "2029-12").count, 120);
   assert.throws(() => createRange("2000-01", "2010-01"), ApiError);
   assert.throws(() => createCompare("2027-01"), ApiError);
   const slugs = ["january","february","march","april","may","june","july","august","september","october","november","december"];
   for (let month = 1; month <= 12; month++) assert.equal(referenceForMonth(month), `https://www.betacalendars.com/${slugs[month - 1]}-calendar.html`);
 });
 
-test("stable 2027 fixtures are month-specific data, not redirects", async () => {
-  const response = handleApiRequest(new Request("https://api.example/v1/2027/january?weekStart=monday"));
-  const json = await response.json();
-  assert.equal(response.status, 200); assert.equal(json.year, 2027); assert.equal(json.month, 1);
-  assert.equal(json.humanReadableReference.url, "https://www.betacalendars.com/january-calendar.html");
+test("all stable 2027 fixtures return their own calculated data and reference", async () => {
+  const slugs = ["january","february","march","april","may","june","july","august","september","october","november","december"];
+  for (let i = 0; i < slugs.length; i++) {
+    const response = handleApiRequest(new Request(`https://api.example/v1/2027/${slugs[i]}?weekStart=monday`));
+    const json = await response.json();
+    assert.equal(response.status, 200); assert.equal(json.year, 2027); assert.equal(json.month, i + 1);
+    assert.equal(json.humanReadableReference.url, `https://www.betacalendars.com/${slugs[i]}-calendar.html`);
+  }
 });
 
 test("HTTP layer returns structured validation, 404, and 405 errors", async () => {
