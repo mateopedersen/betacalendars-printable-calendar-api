@@ -1,0 +1,238 @@
+{
+  "rows": 6,
+  "columns": 7,
+  "paper": {
+    "name": "A4",
+    "widthMm": 210,
+    "heightMm": 297
+  },
+  "orientation": "portrait",
+  "marginMm": 10,
+  "notesArea": {
+    "xMm": 10,
+    "yMm": 252,
+    "widthMm": 190,
+    "heightMm": 35
+  },
+  "cellGeometry": {
+    "widthMm": 27.142857142857142,
+    "heightMm": 40.333333333333336,
+    "areaMm2": 1094.7619047619048
+  },
+  "cells": [
+    {
+      "row": 1,
+      "column": 1,
+      "label": null
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "label": null
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "label": null
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "label": null
+    },
+    {
+      "row": 1,
+      "column": 5,
+      "label": null
+    },
+    {
+      "row": 1,
+      "column": 6,
+      "label": null
+    },
+    {
+      "row": 1,
+      "column": 7,
+      "label": null
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "label": null
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "label": null
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "label": null
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "label": null
+    },
+    {
+      "row": 2,
+      "column": 5,
+      "label": null
+    },
+    {
+      "row": 2,
+      "column": 6,
+      "label": null
+    },
+    {
+      "row": 2,
+      "column": 7,
+      "label": null
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "label": null
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "label": null
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "label": null
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "label": null
+    },
+    {
+      "row": 3,
+      "column": 5,
+      "label": null
+    },
+    {
+      "row": 3,
+      "column": 6,
+      "label": null
+    },
+    {
+      "row": 3,
+      "column": 7,
+      "label": null
+    },
+    {
+      "row": 4,
+      "column": 1,
+      "label": null
+    },
+    {
+      "row": 4,
+      "column": 2,
+      "label": null
+    },
+    {
+      "row": 4,
+      "column": 3,
+      "label": null
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "label": null
+    },
+    {
+      "row": 4,
+      "column": 5,
+      "label": null
+    },
+    {
+      "row": 4,
+      "column": 6,
+      "label": null
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "label": null
+    },
+    {
+      "row": 5,
+      "column": 1,
+      "label": null
+    },
+    {
+      "row": 5,
+      "column": 2,
+      "label": null
+    },
+    {
+      "row": 5,
+      "column": 3,
+      "label": null
+    },
+    {
+      "row": 5,
+      "column": 4,
+      "label": null
+    },
+    {
+      "row": 5,
+      "column": 5,
+      "label": null
+    },
+    {
+      "row": 5,
+      "column": 6,
+      "label": null
+    },
+    {
+      "row": 5,
+      "column": 7,
+      "label": null
+    },
+    {
+      "row": 6,
+      "column": 1,
+      "label": null
+    },
+    {
+      "row": 6,
+      "column": 2,
+      "label": null
+    },
+    {
+      "row": 6,
+      "column": 3,
+      "label": null
+    },
+    {
+      "row": 6,
+      "column": 4,
+      "label": null
+    },
+    {
+      "row": 6,
+      "column": 5,
+      "label": null
+    },
+    {
+      "row": 6,
+      "column": 6,
+      "label": null
+    },
+    {
+      "row": 6,
+      "column": 7,
+      "label": null
+    }
+  ],
+  "humanReadableReference": {
+    "title": "Blank Calendar",
+    "url": "https://www.betacalendars.com/blank-calendar"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "year": 2027,
+  "month": 1,
+  "monthName": "January",
+  "paper": {
+    "name": "US Letter",
+    "widthMm": 279.4,
+    "heightMm": 215.9
+  },
+  "orientation": "landscape",
+  "printableArea": {
+    "xMm": 12,
+    "yMm": 12,
+    "widthMm": 255.39999999999998,
+    "heightMm": 191.9
+  },
+  "header": {
+    "xMm": 12,
+    "yMm": 12,
+    "widthMm": 255.39999999999998,
+    "heightMm": 22
+  },
+  "weekdayHeader": {
+    "xMm": 12,
+    "yMm": 34,
+    "widthMm": 255.39999999999998,
+    "heightMm": 10
+  },
+  "calendarGrid": {
+    "xMm": 12,
+    "yMm": 44,
+    "widthMm": 255.39999999999998,
+    "heightMm": 129.9,
+    "columns": 7,
+    "rows": 5,
+    "weekStart": "monday",
+    "gridMode": "natural"
+  },
+  "dayCell": {
+    "widthMm": 36.48571428571428,
+    "heightMm": 25.98,
+    "areaMm2": 947.898857142857
+  },
+  "notesArea": {
+    "xMm": 12,
+    "yMm": 173.9,
+    "widthMm": 255.39999999999998,
+    "heightMm": 30
+  },
+  "warnings": []
+}

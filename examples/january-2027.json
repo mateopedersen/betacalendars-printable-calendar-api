@@ -1,0 +1,381 @@
+{
+  "year": 2027,
+  "month": 1,
+  "monthName": "January",
+  "daysInMonth": 31,
+  "firstWeekday": "friday",
+  "lastWeekday": "sunday",
+  "weekStart": "monday",
+  "gridMode": "fixed-six-weeks",
+  "adjacentDays": "include",
+  "rowCount": 6,
+  "leadingCells": 4,
+  "trailingCells": 7,
+  "weeks": [
+    [
+      {
+        "date": "2026-12-28",
+        "day": 28,
+        "weekday": "monday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2026-12-29",
+        "day": 29,
+        "weekday": "tuesday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2026-12-30",
+        "day": 30,
+        "weekday": "wednesday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2026-12-31",
+        "day": 31,
+        "weekday": "thursday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-01",
+        "day": 1,
+        "weekday": "friday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-02",
+        "day": 2,
+        "weekday": "saturday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-03",
+        "day": 3,
+        "weekday": "sunday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      }
+    ],
+    [
+      {
+        "date": "2027-01-04",
+        "day": 4,
+        "weekday": "monday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-05",
+        "day": 5,
+        "weekday": "tuesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-06",
+        "day": 6,
+        "weekday": "wednesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-07",
+        "day": 7,
+        "weekday": "thursday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-08",
+        "day": 8,
+        "weekday": "friday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-09",
+        "day": 9,
+        "weekday": "saturday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-10",
+        "day": 10,
+        "weekday": "sunday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      }
+    ],
+    [
+      {
+        "date": "2027-01-11",
+        "day": 11,
+        "weekday": "monday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-12",
+        "day": 12,
+        "weekday": "tuesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-13",
+        "day": 13,
+        "weekday": "wednesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-14",
+        "day": 14,
+        "weekday": "thursday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-15",
+        "day": 15,
+        "weekday": "friday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-16",
+        "day": 16,
+        "weekday": "saturday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-17",
+        "day": 17,
+        "weekday": "sunday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      }
+    ],
+    [
+      {
+        "date": "2027-01-18",
+        "day": 18,
+        "weekday": "monday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-19",
+        "day": 19,
+        "weekday": "tuesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-20",
+        "day": 20,
+        "weekday": "wednesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-21",
+        "day": 21,
+        "weekday": "thursday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-22",
+        "day": 22,
+        "weekday": "friday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-23",
+        "day": 23,
+        "weekday": "saturday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-24",
+        "day": 24,
+        "weekday": "sunday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      }
+    ],
+    [
+      {
+        "date": "2027-01-25",
+        "day": 25,
+        "weekday": "monday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-26",
+        "day": 26,
+        "weekday": "tuesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-27",
+        "day": 27,
+        "weekday": "wednesday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-28",
+        "day": 28,
+        "weekday": "thursday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-29",
+        "day": 29,
+        "weekday": "friday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-30",
+        "day": 30,
+        "weekday": "saturday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-01-31",
+        "day": 31,
+        "weekday": "sunday",
+        "inCurrentMonth": true,
+        "isAdjacent": false,
+        "isPlaceholder": false
+      }
+    ],
+    [
+      {
+        "date": "2027-02-01",
+        "day": 1,
+        "weekday": "monday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-02-02",
+        "day": 2,
+        "weekday": "tuesday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-02-03",
+        "day": 3,
+        "weekday": "wednesday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-02-04",
+        "day": 4,
+        "weekday": "thursday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-02-05",
+        "day": 5,
+        "weekday": "friday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-02-06",
+        "day": 6,
+        "weekday": "saturday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      },
+      {
+        "date": "2027-02-07",
+        "day": 7,
+        "weekday": "sunday",
+        "inCurrentMonth": false,
+        "isAdjacent": true,
+        "isPlaceholder": false
+      }
+    ]
+  ],
+  "topology": {
+    "weekdayDistribution": {
+      "sunday": 5,
+      "monday": 4,
+      "tuesday": 4,
+      "wednesday": 4,
+      "thursday": 4,
+      "friday": 5,
+      "saturday": 5
+    },
+    "weekendCount": 10,
+    "topologySignature": "2027-01:monday:fixed-six-weeks:4:31:6"
+  },
+  "humanReadableReference": {
+    "title": "January 2027 Calendar",
+    "url": "https://www.betacalendars.com/january-calendar.html"
+  }
+}

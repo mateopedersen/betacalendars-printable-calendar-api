@@ -1,0 +1,19 @@
+{
+  "name": "betacalendars-printable-calendar-api",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Deterministic Gregorian calendar grids and printable page geometry.",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "start": "node --experimental-strip-types src/server.ts",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "npm test && node --experimental-strip-types src/server.ts --check-openapi"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "typescript": "^5.8.3"
+  },
+  "license": "MIT"
+}

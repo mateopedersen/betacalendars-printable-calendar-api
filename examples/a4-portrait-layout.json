@@ -1,0 +1,51 @@
+{
+  "year": 2027,
+  "month": 1,
+  "monthName": "January",
+  "paper": {
+    "name": "A4",
+    "widthMm": 210,
+    "heightMm": 297
+  },
+  "orientation": "portrait",
+  "printableArea": {
+    "xMm": 10,
+    "yMm": 10,
+    "widthMm": 190,
+    "heightMm": 277
+  },
+  "header": {
+    "xMm": 10,
+    "yMm": 10,
+    "widthMm": 190,
+    "heightMm": 22
+  },
+  "weekdayHeader": {
+    "xMm": 10,
+    "yMm": 32,
+    "widthMm": 190,
+    "heightMm": 10
+  },
+  "calendarGrid": {
+    "xMm": 10,
+    "yMm": 42,
+    "widthMm": 190,
+    "heightMm": 210,
+    "columns": 7,
+    "rows": 6,
+    "weekStart": "monday",
+    "gridMode": "fixed-six-weeks"
+  },
+  "dayCell": {
+    "widthMm": 27.142857142857142,
+    "heightMm": 35,
+    "areaMm2": 950
+  },
+  "notesArea": {
+    "xMm": 10,
+    "yMm": 252,
+    "widthMm": 190,
+    "heightMm": 35
+  },
+  "warnings": []
+}

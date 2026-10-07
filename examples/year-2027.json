@@ -1,0 +1,247 @@
+{
+  "year": 2027,
+  "leapYear": false,
+  "dayCount": 365,
+  "months": [
+    {
+      "month": 1,
+      "monthName": "January",
+      "days": 31,
+      "firstWeekday": "friday",
+      "lastWeekday": "sunday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/january-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 5,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 5,
+        "saturday": 5
+      },
+      "weekendCount": 10
+    },
+    {
+      "month": 2,
+      "monthName": "February",
+      "days": 28,
+      "firstWeekday": "monday",
+      "lastWeekday": "sunday",
+      "naturalRows": 4,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/february-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    },
+    {
+      "month": 3,
+      "monthName": "March",
+      "days": 31,
+      "firstWeekday": "monday",
+      "lastWeekday": "wednesday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/march-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 5,
+        "tuesday": 5,
+        "wednesday": 5,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    },
+    {
+      "month": 4,
+      "monthName": "April",
+      "days": 30,
+      "firstWeekday": "thursday",
+      "lastWeekday": "friday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/april-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 5,
+        "friday": 5,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    },
+    {
+      "month": 5,
+      "monthName": "May",
+      "days": 31,
+      "firstWeekday": "saturday",
+      "lastWeekday": "monday",
+      "naturalRows": 6,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/may-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 5,
+        "monday": 5,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 5
+      },
+      "weekendCount": 10
+    },
+    {
+      "month": 6,
+      "monthName": "June",
+      "days": 30,
+      "firstWeekday": "tuesday",
+      "lastWeekday": "wednesday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/june-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 5,
+        "wednesday": 5,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    },
+    {
+      "month": 7,
+      "monthName": "July",
+      "days": 31,
+      "firstWeekday": "thursday",
+      "lastWeekday": "saturday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/july-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 5,
+        "friday": 5,
+        "saturday": 5
+      },
+      "weekendCount": 9
+    },
+    {
+      "month": 8,
+      "monthName": "August",
+      "days": 31,
+      "firstWeekday": "sunday",
+      "lastWeekday": "tuesday",
+      "naturalRows": 6,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/august-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 5,
+        "monday": 5,
+        "tuesday": 5,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 9
+    },
+    {
+      "month": 9,
+      "monthName": "September",
+      "days": 30,
+      "firstWeekday": "wednesday",
+      "lastWeekday": "thursday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/september-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 5,
+        "thursday": 5,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    },
+    {
+      "month": 10,
+      "monthName": "October",
+      "days": 31,
+      "firstWeekday": "friday",
+      "lastWeekday": "sunday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/october-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 5,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 5,
+        "saturday": 5
+      },
+      "weekendCount": 10
+    },
+    {
+      "month": 11,
+      "monthName": "November",
+      "days": 30,
+      "firstWeekday": "monday",
+      "lastWeekday": "tuesday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/november-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 5,
+        "tuesday": 5,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    },
+    {
+      "month": 12,
+      "monthName": "December",
+      "days": 31,
+      "firstWeekday": "wednesday",
+      "lastWeekday": "friday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/december-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 5,
+        "thursday": 5,
+        "friday": 5,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    }
+  ]
+}

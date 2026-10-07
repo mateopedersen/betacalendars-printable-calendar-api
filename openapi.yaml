@@ -1,0 +1,2137 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "BetaCalendars Printable Calendar & Layout",
+    "version": "1.0.0",
+    "description": "Generate deterministic Gregorian month grids, printable page geometry, undated planning grids, and year/range topology as structured JSON.",
+    "x-category": "Tools",
+    "x-long-description": "## BetaCalendars Printable Calendar & Layout\n\nGenerate deterministic Gregorian calendar structures and physical page measurements for applications, print pipelines, planner tools, and regression tests.\n\n### Why this API\n\nThe service models the calendar month first, then derives its week grid and printable geometry. It supports seven week starts, natural or fixed six-week layouts, explicit adjacent-day behavior, A4/US Letter/A5/Legal page presets, and a true blank undated grid. Geometry is returned in millimeters and is calculated without local-time conversions.\n\n### Endpoint families\n\n- **Calendar:** month grids, year summaries, and stable 2027 monthly fixtures.\n- **Printable Layout:** physical paper geometry, margins, headings, weekday bands, writing cells, and notes area.\n- **Blank Planning:** undated grids with configurable rows and columns.\n- **Ranges & Topology:** chronological month ranges, selected-month comparisons, and grid signatures.\n- **References:** human-readable resources accompanying the API.\n\n### Deterministic model\n\nInputs use Gregorian civil year/month values. The service does not scrape holiday/event sources, infer locale-specific holidays, call external URLs, or store user data. Adjacent dates are derived from the same Gregorian model. Invalid input returns a structured JSON error.\n\n### Paper geometry\n\nDimensions are A4 210 × 297 mm, US Letter 215.9 × 279.4 mm, A5 148 × 210 mm, and US Legal 215.9 × 355.6 mm. Orientation swaps width and height. Margins and reserved regions are subtracted before day-cell dimensions are calculated; warnings identify cramped writing areas.\n\n### Example\n\n`GET /v1/print-layout/2027/1?paper=a4&orientation=portrait&weekStart=monday&gridMode=fixed-six-weeks`\n\n### Human-readable references\n\nThe API accompanies the [Beta Calendars project](https://www.betacalendars.com/) . Printable resources: [Blank Calendar](https://www.betacalendars.com/blank-calendar), [January](https://www.betacalendars.com/january-calendar.html), [February](https://www.betacalendars.com/february-calendar.html), [March](https://www.betacalendars.com/march-calendar.html), [April](https://www.betacalendars.com/april-calendar.html), [May](https://www.betacalendars.com/may-calendar.html), [June](https://www.betacalendars.com/june-calendar.html), [July](https://www.betacalendars.com/july-calendar.html), [August](https://www.betacalendars.com/august-calendar.html), [September](https://www.betacalendars.com/september-calendar.html), [October](https://www.betacalendars.com/october-calendar.html), [November](https://www.betacalendars.com/november-calendar.html), [December](https://www.betacalendars.com/december-calendar.html).",
+    "x-website": "https://www.betacalendars.com/",
+    "x-public": false,
+    "termsOfService": "https://www.betacalendars.com/terms-of-service"
+  },
+  "servers": [
+    {
+      "url": "https://api.betacalendars.com",
+      "description": "Planned production origin; activate after deployment and DNS verification."
+    }
+  ],
+  "tags": [
+    {
+      "name": "System",
+      "description": "Lightweight service status."
+    },
+    {
+      "name": "Calendar",
+      "description": "Gregorian month grids and year summaries."
+    },
+    {
+      "name": "Printable Layout",
+      "description": "Physical paper presets and print geometry."
+    },
+    {
+      "name": "Blank Planning",
+      "description": "Undated configurable planning grids."
+    },
+    {
+      "name": "Ranges",
+      "description": "Chronological ranges and selected-month comparisons."
+    },
+    {
+      "name": "Topology",
+      "description": "Calendar grid structure and signatures."
+    },
+    {
+      "name": "2027 Month Snapshots",
+      "description": "Stable, calculated fixtures for examples and regression testing."
+    },
+    {
+      "name": "References",
+      "description": "Human-readable resources accompanying the API."
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "description": "Lightweight readiness endpoint. Returns service name and semantic version only; no environment or deployment details.",
+        "tags": [
+          "System"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/month/{year}/{month}": {
+      "get": {
+        "summary": "Generate a month grid",
+        "description": "Build a deterministic Gregorian month model with configurable weekday order, natural or fixed six-week rows, adjacent dates, topology, and a month reference.",
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9999
+            },
+            "description": "Gregorian civil year."
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "description": "Month number, 1 through 12."
+          },
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday in the displayed grid. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Choose the minimum natural row count or exactly six rows. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Show neighboring dates, leave cells empty, or mark explicit placeholders. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                },
+                "examples": {
+                  "january-2027": {
+                    "summary": "January 2027, Monday-first",
+                    "value": {
+                      "year": 2027,
+                      "month": 1,
+                      "monthName": "January",
+                      "daysInMonth": 31,
+                      "firstWeekday": "friday",
+                      "lastWeekday": "sunday",
+                      "weekStart": "monday",
+                      "gridMode": "natural",
+                      "rowCount": 6,
+                      "leadingCells": 4,
+                      "trailingCells": 7
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/print-layout/{year}/{month}": {
+      "get": {
+        "summary": "Calculate printable page geometry",
+        "description": "Calculate physical paper dimensions, margins, header bands, month grid, day-cell dimensions, notes region, and fit warnings in millimeters.",
+        "tags": [
+          "Printable Layout"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9999
+            },
+            "description": "Gregorian civil year."
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "description": "Month number, 1 through 12."
+          },
+          {
+            "name": "paper",
+            "in": "query",
+            "required": false,
+            "description": "ISO or North American paper preset. Default: a4.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "a4",
+                "letter",
+                "a5",
+                "legal"
+              ],
+              "default": "a4"
+            }
+          },
+          {
+            "name": "orientation",
+            "in": "query",
+            "required": false,
+            "description": "Page orientation. Default: portrait.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "portrait",
+                "landscape"
+              ],
+              "default": "portrait"
+            }
+          },
+          {
+            "name": "margin",
+            "in": "query",
+            "description": "Uniform margin in mm (0–50).",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 50,
+              "default": 10
+            }
+          },
+          {
+            "name": "headerHeight",
+            "in": "query",
+            "description": "Reserved title band in mm (0–100).",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 22
+            }
+          },
+          {
+            "name": "weekdayHeaderHeight",
+            "in": "query",
+            "description": "Weekday label band in mm (0–50).",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 50,
+              "default": 10
+            }
+          },
+          {
+            "name": "notesHeight",
+            "in": "query",
+            "description": "Notes band below the calendar in mm (0–150).",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 150,
+              "default": 35
+            }
+          },
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Month row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrintLayout"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/blank-calendar": {
+      "get": {
+        "summary": "Create an undated blank grid",
+        "description": "Create a truly undated structural grid and calculate its cell geometry for a supported paper preset. No dates are fabricated.",
+        "tags": [
+          "Blank Planning"
+        ],
+        "parameters": [
+          {
+            "name": "rows",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12,
+              "default": 6
+            }
+          },
+          {
+            "name": "columns",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12,
+              "default": 7
+            }
+          },
+          {
+            "name": "paper",
+            "in": "query",
+            "required": false,
+            "description": "Paper preset. Default: a4.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "a4",
+                "letter",
+                "a5",
+                "legal"
+              ],
+              "default": "a4"
+            }
+          },
+          {
+            "name": "orientation",
+            "in": "query",
+            "required": false,
+            "description": "Page orientation. Default: portrait.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "portrait",
+                "landscape"
+              ],
+              "default": "portrait"
+            }
+          },
+          {
+            "name": "margin",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 50,
+              "default": 10
+            }
+          },
+          {
+            "name": "notesHeight",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 150,
+              "default": 35
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlankGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "Blank Calendar Reference",
+          "url": "https://www.betacalendars.com/blank-calendar"
+        }
+      }
+    },
+    "/v1/year/{year}": {
+      "get": {
+        "summary": "Summarize a Gregorian year",
+        "description": "Return leap-year status, total days, and compact summaries for all twelve months.",
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9999
+            },
+            "description": "Gregorian civil year."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/YearSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/range": {
+      "get": {
+        "summary": "Summarize a chronological month range",
+        "description": "Return inclusive month summaries in chronological order. Maximum range is 120 months.",
+        "tags": [
+          "Ranges"
+        ],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            },
+            "example": "2026-11"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            },
+            "example": "2027-02"
+          },
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "Week layout context to return. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RangeSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/topology/{year}/{month}": {
+      "get": {
+        "summary": "Inspect month grid topology",
+        "description": "Return row counts, weekday distribution, leading/trailing positions, weekend count, and a stable topology signature without physical print geometry.",
+        "tags": [
+          "Topology"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9999
+            },
+            "description": "Gregorian civil year."
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "description": "Month number, 1 through 12."
+          },
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Topology"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/compare": {
+      "get": {
+        "summary": "Compare selected months",
+        "description": "Compare 2–24 month topologies, including year boundaries. Useful for layout selection and regression fixtures.",
+        "tags": [
+          "Ranges"
+        ],
+        "parameters": [
+          {
+            "name": "months",
+            "in": "query",
+            "required": true,
+            "description": "Comma-separated YYYY-MM values, for example 2026-11,2026-12,2027-01.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2026-11,2026-12,2027-01,2027-02"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Compare"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/paper-sizes": {
+      "get": {
+        "summary": "List paper presets",
+        "description": "Return exact dimensions in millimeters for A4, US Letter, A5, and US Legal.",
+        "tags": [
+          "Printable Layout"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaperSizes"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/references": {
+      "get": {
+        "summary": "List human-readable calendar references",
+        "description": "Return the project homepage, undated blank-grid page, and one canonical reference URL for each month. These pages accompany the API data.",
+        "tags": [
+          "References"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/References"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/2027/january": {
+      "get": {
+        "summary": "Generate the 2027 January fixture",
+        "description": "January 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "January Calendar Reference",
+          "url": "https://www.betacalendars.com/january-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/february": {
+      "get": {
+        "summary": "Generate the 2027 February fixture",
+        "description": "February 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "February Calendar Reference",
+          "url": "https://www.betacalendars.com/february-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/march": {
+      "get": {
+        "summary": "Generate the 2027 March fixture",
+        "description": "March 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "March Calendar Reference",
+          "url": "https://www.betacalendars.com/march-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/april": {
+      "get": {
+        "summary": "Generate the 2027 April fixture",
+        "description": "April 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "April Calendar Reference",
+          "url": "https://www.betacalendars.com/april-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/may": {
+      "get": {
+        "summary": "Generate the 2027 May fixture",
+        "description": "May 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "May Calendar Reference",
+          "url": "https://www.betacalendars.com/may-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/june": {
+      "get": {
+        "summary": "Generate the 2027 June fixture",
+        "description": "June 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "June Calendar Reference",
+          "url": "https://www.betacalendars.com/june-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/july": {
+      "get": {
+        "summary": "Generate the 2027 July fixture",
+        "description": "July 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "July Calendar Reference",
+          "url": "https://www.betacalendars.com/july-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/august": {
+      "get": {
+        "summary": "Generate the 2027 August fixture",
+        "description": "August 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "August Calendar Reference",
+          "url": "https://www.betacalendars.com/august-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/september": {
+      "get": {
+        "summary": "Generate the 2027 September fixture",
+        "description": "September 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "September Calendar Reference",
+          "url": "https://www.betacalendars.com/september-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/october": {
+      "get": {
+        "summary": "Generate the 2027 October fixture",
+        "description": "October 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "October Calendar Reference",
+          "url": "https://www.betacalendars.com/october-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/november": {
+      "get": {
+        "summary": "Generate the 2027 November fixture",
+        "description": "November 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "November Calendar Reference",
+          "url": "https://www.betacalendars.com/november-calendar.html"
+        }
+      }
+    },
+    "/v1/2027/december": {
+      "get": {
+        "summary": "Generate the 2027 December fixture",
+        "description": "December 2027 is a stable, deterministic fixture for examples and regression testing. It returns the actual calculated month grid and the matching human-readable calendar reference.",
+        "tags": [
+          "2027 Month Snapshots"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "required": false,
+            "description": "First weekday. Default: monday.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+              ],
+              "default": "monday"
+            }
+          },
+          {
+            "name": "gridMode",
+            "in": "query",
+            "required": false,
+            "description": "Row policy. Default: natural.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "natural",
+                "fixed-six-weeks"
+              ],
+              "default": "natural"
+            }
+          },
+          {
+            "name": "adjacentDays",
+            "in": "query",
+            "required": false,
+            "description": "Neighboring date presentation. Default: include.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "include",
+                "hide",
+                "placeholder"
+              ],
+              "default": "include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthGrid"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "externalDocs": {
+          "description": "December Calendar Reference",
+          "url": "https://www.betacalendars.com/december-calendar.html"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Health": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "service": {
+            "type": "string",
+            "example": "betacalendars-calendar-layout-api"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          }
+        }
+      },
+      "MonthGrid": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "month": {
+            "type": "integer"
+          },
+          "monthName": {
+            "type": "string"
+          },
+          "daysInMonth": {
+            "type": "integer"
+          },
+          "firstWeekday": {
+            "type": "string"
+          },
+          "lastWeekday": {
+            "type": "string"
+          },
+          "weekStart": {
+            "type": "string"
+          },
+          "gridMode": {
+            "type": "string"
+          },
+          "adjacentDays": {
+            "type": "string"
+          },
+          "rowCount": {
+            "type": "integer"
+          },
+          "leadingCells": {
+            "type": "integer"
+          },
+          "trailingCells": {
+            "type": "integer"
+          },
+          "weeks": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "day": {
+                    "type": "integer",
+                    "nullable": true
+                  },
+                  "weekday": {
+                    "type": "string"
+                  },
+                  "inCurrentMonth": {
+                    "type": "boolean"
+                  },
+                  "isAdjacent": {
+                    "type": "boolean"
+                  },
+                  "isPlaceholder": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "topology": {
+            "type": "object"
+          },
+          "humanReadableReference": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      },
+      "PrintLayout": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "month": {
+            "type": "integer"
+          },
+          "paper": {
+            "type": "object"
+          },
+          "orientation": {
+            "type": "string"
+          },
+          "printableArea": {
+            "type": "object"
+          },
+          "header": {
+            "type": "object"
+          },
+          "weekdayHeader": {
+            "type": "object"
+          },
+          "calendarGrid": {
+            "type": "object"
+          },
+          "dayCell": {
+            "type": "object"
+          },
+          "notesArea": {
+            "type": "object"
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BlankGrid": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "integer"
+          },
+          "columns": {
+            "type": "integer"
+          },
+          "paper": {
+            "type": "object"
+          },
+          "orientation": {
+            "type": "string"
+          },
+          "cellGeometry": {
+            "type": "object"
+          },
+          "cells": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "row": {
+                  "type": "integer"
+                },
+                "column": {
+                  "type": "integer"
+                },
+                "label": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "humanReadableReference": {
+            "type": "object"
+          }
+        }
+      },
+      "MonthSummary": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "integer"
+          },
+          "monthName": {
+            "type": "string"
+          },
+          "days": {
+            "type": "integer"
+          },
+          "firstWeekday": {
+            "type": "string"
+          },
+          "lastWeekday": {
+            "type": "string"
+          },
+          "naturalRows": {
+            "type": "integer"
+          },
+          "fixedRows": {
+            "type": "integer"
+          },
+          "reference": {
+            "type": "string",
+            "format": "uri"
+          },
+          "weekdayDistribution": {
+            "type": "object"
+          },
+          "weekendCount": {
+            "type": "integer"
+          }
+        }
+      },
+      "YearSummary": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "leapYear": {
+            "type": "boolean"
+          },
+          "dayCount": {
+            "type": "integer"
+          },
+          "months": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthSummary"
+            }
+          }
+        }
+      },
+      "RangeSummary": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "weekStart": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "months": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthSummary"
+            }
+          }
+        }
+      },
+      "Topology": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "month": {
+            "type": "integer"
+          },
+          "monthName": {
+            "type": "string"
+          },
+          "daysInMonth": {
+            "type": "integer"
+          },
+          "firstWeekday": {
+            "type": "string"
+          },
+          "lastWeekday": {
+            "type": "string"
+          },
+          "weekStart": {
+            "type": "string"
+          },
+          "gridMode": {
+            "type": "string"
+          },
+          "leadingCells": {
+            "type": "integer"
+          },
+          "trailingCells": {
+            "type": "integer"
+          },
+          "rowCount": {
+            "type": "integer"
+          },
+          "weekdayDistribution": {
+            "type": "object"
+          },
+          "weekendCount": {
+            "type": "integer"
+          },
+          "topologySignature": {
+            "type": "string"
+          }
+        }
+      },
+      "Compare": {
+        "type": "object",
+        "properties": {
+          "months": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthSummary"
+            }
+          }
+        }
+      },
+      "PaperSizes": {
+        "type": "object",
+        "properties": {
+          "papers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "widthMm": {
+                  "type": "number"
+                },
+                "heightMm": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "References": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "homepage": {
+            "type": "object"
+          },
+          "blank": {
+            "type": "object"
+          },
+          "months": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Input failed validation.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "No matching API resource exists.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

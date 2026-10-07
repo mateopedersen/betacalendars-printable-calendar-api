@@ -1,0 +1,88 @@
+{
+  "from": "2026-11",
+  "to": "2027-02",
+  "weekStart": "monday",
+  "count": 4,
+  "months": [
+    {
+      "month": 11,
+      "monthName": "November",
+      "days": 30,
+      "firstWeekday": "sunday",
+      "lastWeekday": "monday",
+      "naturalRows": 6,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/november-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 5,
+        "monday": 5,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 9
+    },
+    {
+      "month": 12,
+      "monthName": "December",
+      "days": 31,
+      "firstWeekday": "tuesday",
+      "lastWeekday": "thursday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/december-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 5,
+        "wednesday": 5,
+        "thursday": 5,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    },
+    {
+      "month": 1,
+      "monthName": "January",
+      "days": 31,
+      "firstWeekday": "friday",
+      "lastWeekday": "sunday",
+      "naturalRows": 5,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/january-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 5,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 5,
+        "saturday": 5
+      },
+      "weekendCount": 10
+    },
+    {
+      "month": 2,
+      "monthName": "February",
+      "days": 28,
+      "firstWeekday": "monday",
+      "lastWeekday": "sunday",
+      "naturalRows": 4,
+      "fixedRows": 6,
+      "reference": "https://www.betacalendars.com/february-calendar.html",
+      "weekdayDistribution": {
+        "sunday": 4,
+        "monday": 4,
+        "tuesday": 4,
+        "wednesday": 4,
+        "thursday": 4,
+        "friday": 4,
+        "saturday": 4
+      },
+      "weekendCount": 8
+    }
+  ]
+}
