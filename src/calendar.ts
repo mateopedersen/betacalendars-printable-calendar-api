@@ -173,7 +173,10 @@ export function createRange(from: string | null, to: string | null, weekStart?: 
   if (end < start) throw new ApiError(400, "INVALID_RANGE", "to must be the same as or later than from.");
   if (end - start + 1 > 120) throw new ApiError(400, "RANGE_TOO_LARGE", "A range may contain at most 120 months.");
   const week = parseWeekStart(weekStart);
-  const months = Array.from({ length: end - start + 1 }, (_, i) => { const n = start + i; return monthSummary(Math.floor(n / 12), n % 12 + 1); });
+  const months = Array.from({ length: end - start + 1 }, (_, i) => {
+    const n = start + i, year = Math.floor(n / 12), month = n % 12 + 1;
+    return { ...monthSummary(year, month), monthKey: `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}` };
+  });
   return { from, to, weekStart: week, count: months.length, months };
 }
 export function createCompare(monthsParam: string | null) {
